@@ -1,0 +1,174 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+<title>Homework 5</title>
+    <style>
+    body {
+        background-image: url("images/bg.jpg");
+		text-align: center;
+    }
+        #center{
+            text-align: center;
+        }
+		.intro{
+			font-size: 20pt;
+		}
+		.timer{
+			font-size: 20pt;
+			color:red;
+		}
+        div#memory_board{
+            
+            
+border: 1px solid white;
+            width:1050px;
+            height:770px;
+            padding:24px;
+            margin:0px auto;
+        }
+        div#memory_board > div{
+            background-image: url("images/1.jpg");
+			background-size: cover;
+            border:#000 1px solid;
+            width:200px;
+            height:200px;
+            float:left;
+            margin:10px;
+            padding:20px;
+            font-size:64px;
+            cursor:pointer;
+            text-align:center;
+        }
+			table{
+			align: center;
+		}
+		table, th, td {
+  			border: 1px solid black;
+		}
+		td {
+  			height: 30px;
+  
+}
+				.Button3{
+	background-color:white;
+	-webkit-appearance: none;
+	height: 50px;
+	width: 100px;
+	font-size: larger;
+	color: #0ba418;
+	font-family: serif;
+	text-align: center;
+	border-radius: 15px;
+}
+    </style>
+    <script>
+        var array_img_12 = ['cherry','apple','strawberry','tomato','orange','banana','apple','tomato','cherry','strawberry','orange','banana'];
+
+        var array_val = [];
+        var table_tile = [];
+        var show_tiles = 0;
+        
+		function shuffle(a) {
+    		var j, x, i;
+    		for (i = a.length - 1; i > 0; i--) {
+        		j = Math.floor(Math.random() * (i + 1));
+					x = a[i];
+        			a[i] = a[j];
+        			a[j] = x;
+			}
+    	return a;
+		}
+        function create_board() {
+            show_tiles = 0;
+            var output = '';
+            shuffle(array_img_12);
+            for (var i = 0; i < array_img_12.length; i++) {
+                output += '<div id="tile_' + i + '" onclick="showarr_tiles(this,\'' + array_img_12[i] + '\')"></div>';
+            }
+   
+			function MyTimer(callback, val) {
+        val = val || 180; 
+        var timer=setInterval(function() { 
+            callback(val);
+            if(val-- <= 0) { 
+                clearInterval(timer); 
+            } 
+        }, 1000);
+    }
+    new MyTimer(function(val) {
+        
+		var timerMsg = (val >= 180 ? "03:00" : val >=130 ? "02:" + val%60 : val >= 120? "02:0"+ val%60:val>=60 ? "01:"+val%60: val >=10 ? "00:"+val:"00:0"+val);
+        document.getElementById("timer").textContent = timerMsg; 
+    });
+        }
+
+        function showarr_tiles(tile, val) {
+            if (tile.innerHTML == "" && array_val.length < 2) {
+                tile.style.background = '#666666';
+                tile.innerHTML = '<img src="images/' + val + '.jpg"/>';
+                if (array_val.length == 0) {
+                    array_val.push(val);
+                    table_tile.push(tile.id);
+                } else if (array_val.length == 1) {
+                    array_val.push(val);
+                    table_tile.push(tile.id);
+                    if (array_val[0] == array_val[1]) {
+                        show_tiles += 2;
+
+                        array_val = [];
+                        table_tile = [];
+
+                        if (show_tiles == array_img_12.length) {
+                            alert("Great!... Generating New Sets of board");
+                            document.getElementById('memory_board').innerHTML = "";
+                            create_board();
+                        }
+                    } else {
+                        function flip2Back() {
+
+                            var table_tile1 = document.getElementById(table_tile[0]);
+                            var table_tile_2 = document.getElementById(table_tile[1]);
+                            table_tile1.style.background = "url('images/1.jpg')";
+                            table_tile1.innerHTML = "";
+                            table_tile_2.style.background = "url('images/1.jpg')";
+                            table_tile_2.innerHTML = "";
+
+                            array_val = [];
+                            table_tile = [];
+                        }
+
+                        setTimeout(flip2Back, 1200);
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+
+<h1>MEMORY GAME</h1>
+	<h2>CHI LUONG</h2>
+<h3><a href="index.html">Part A</a></h3>
+<br>
+<div class="intro"><p>To play this game, you choose matching pair to get point. If they are not matching, they will hidden. Good luck!</p></div>
+	<button id="myBtn1" class="Button3" onClick="create_board()">LET'S PLAY</button>
+	<br>
+	<div class="timer">Game over in <span id="timer">00:00</span> minutes!</div>
+<div id="center">
+	<table style="width:50%" align="center">
+  <tr>
+    <td><a href="partB0.html">Press here for 8 tile</a></td>
+    <td><a href="partB1.html">Press here for 10 tile</a></td> 
+    <td><a href="partB2.html">Press here for 12 tile</a></td>
+  </tr>
+</table>
+
+</div>
+	<br>
+<div id="memory_board"></div>
+
+
+</body>
+</html>
